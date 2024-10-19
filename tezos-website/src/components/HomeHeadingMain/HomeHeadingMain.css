@@ -1,0 +1,12 @@
+.home {
+    color: white;
+    display: flex;
+    flex-direction: column; /* To prevent overflow on the body */
+  }
+  
+  .hero {
+    text-align: left;
+    padding: 50px;
+    max-height: 100vh; /* Limit the hero section to viewport height */
+    overflow-y: auto; /* Scroll vertically if content exceeds viewport */
+  }

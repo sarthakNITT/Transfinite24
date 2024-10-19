@@ -1,0 +1,33 @@
+.home {
+    color: white;
+    display: flex;
+    flex-direction: column; /* To prevent overflow on the body */
+  }
+  
+  .cards-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px;
+    max-height: 400px; /* Set a fixed height for the cards container */
+    overflow-y: auto; /* Make the card section scrollable vertically */
+  }
+  
+  .card {
+    width: 300px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent card */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card h2 {
+    font-size: 24px;
+  }
+  

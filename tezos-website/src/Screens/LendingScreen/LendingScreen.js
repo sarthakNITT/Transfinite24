@@ -1,4 +1,3 @@
-// src/components/Lending.js
 import React from 'react';
 
 const Lending = () => {
