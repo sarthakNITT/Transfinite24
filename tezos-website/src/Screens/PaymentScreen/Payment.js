@@ -1,11 +1,15 @@
-// src/components/Payment.js
 import React from 'react';
+import './payment.css'
+import Header from '../../components/Header/Header'
+import Footer from '../../components/Footer/Footer'
+import PaymentContent from '../../components/payment/paymentContent'
 
 const Payment = () => {
   return (
-    <div className="page-content">
-      <h1>Crypto Payments</h1>
-      <p>Make payments using crypto with ease.</p>
+    <div className="payment">
+      <Header/>
+      <PaymentContent/>
+      <Footer/>
     </div>
   );
 };

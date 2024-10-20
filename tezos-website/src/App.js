@@ -6,6 +6,7 @@ import HomeScreen from './Screens/HomeScreen/HomeScreen'
 import SignupScreen from './Screens/SignupScreen/SignupScreen'
 import NFTScreen from './Screens/NFTScreen/NFT'
 import LendingScreen from './Screens/LendingScreen/LendingScreen'
+import PaymentScreen from './Screens/PaymentScreen/Payment';
 import './App.css';  // Ensure the CSS is imported here
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path='/Login' element={<LoginScreen/>} />
         <Route path='/NFT' element={<NFTScreen/>} />
         <Route path='/Lending' element={<LendingScreen/>} />
+        <Route path='/Payment' element={<PaymentScreen/>} />
       </Routes>
     </Router>
   );
