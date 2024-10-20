@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tezos NFT Lending DApp</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1,
+        h2 {
+            color: #333;
+        }
+
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .input-field {
+            padding: 10px;
+            margin: 5px;
+            font-size: 1em;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        #walletAddress {
+            margin-top: 20px;
+            font-size: 1.2em;
+            word-wrap: break-word;
+            max-width: 400px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Tezos NFT Lending DApp</h1>
+
+    <!-- Wallet Connection Section -->
+    <button class="button" id="connectWallet">Connect Wallet</button>
+    <button class="button" id="disconnectWallet" style="display: none;">Disconnect Wallet</button>
+    <p id="walletAddress"></p>
+
+    <!-- Loan Request Section -->
+    <div class="section">
+        <h2>Request Loan</h2>
+        <input class="input-field" type="text" id="nftTokenId" placeholder="NFT Token ID">
+        <input class="input-field" type="text" id="loanAmount" placeholder="Loan Amount (XTZ)">
+        <button class="button" id="requestLoan">Request Loan</button>
+    </div>
+
+    <!-- Repay Loan Section -->
+    <div class="section">
+        <h2>Repay Loan</h2>
+        <input class="input-field" type="text" id="repaymentAmount" placeholder="Repayment Amount (XTZ)">
+        <button class="button" id="repayLoan">Repay Loan</button>
+    </div>
+
+    <!-- Seize Collateral Section (Admin) -->
+    <div class="section">
+        <h2>Seize Collateral (Admin)</h2>
+        <input class="input-field" type="text" id="borrowerAddress" placeholder="Borrower Address">
+        <button class="button" id="seizeCollateral">Seize Collateral</button>
+    </div>
+
+    <!-- Deposit Funds Section (Admin) -->
+    <div class="section">
+        <h2>Deposit Funds (Admin)</h2>
+        <input class="input-field" type="text" id="depositAmount" placeholder="Deposit Amount (XTZ)">
+        <button class="button" id="depositFunds">Deposit Funds</button>
+    </div>
+
+    <!-- Withdraw Funds Section (Admin) -->
+    <div class="section">
+        <h2>Withdraw Funds (Admin)</h2>
+        <input class="input-field" type="text" id="withdrawAmount" placeholder="Withdraw Amount (XTZ)">
+        <button class="button" id="withdrawFunds">Withdraw Funds</button>
+    </div>
+
+    <!-- Include Taquito and Beacon Wallet -->
+    <script src="https://unpkg.com/@taquito/taquito@11.1.0/dist/taquito.min.js"></script>
+    <script src="https://unpkg.com/@taquito/beacon-wallet@11.1.0/dist/taquito-beacon-wallet.umd.min.js"></script>
+
+    <script>
+        const { TezosToolkit } = taquito;
+        const { BeaconWallet } = taquitobeaconwallet;
+
+        const Tezos = new TezosToolkit('https://ghostnet.smartpy.io');
+        const wallet = new BeaconWallet({
+            name: 'NFT Lending DApp',
+            preferredNetwork: 'ghostnet',
+        });
+
+        Tezos.setWalletProvider(wallet);
+
+        const contractAddress = 'KT1WH2qaxooVVs4Xmu7cRVveKaQARxq3AFHT'; // Replace with actual contract address
+
+        const connectBtn = document.getElementById('connectWallet');
+        const disconnectBtn = document.getElementById('disconnectWallet');
+        const walletAddressEl = document.getElementById('walletAddress');
+
+        // Handle wallet connection
+        async function connectWallet() {
+            try {
+                await wallet.requestPermissions({ network: { type: 'ghostnet' } });
+                const activeAccount = await wallet.client.getActiveAccount();
+                if (activeAccount) {
+                    const address = activeAccount.address;
+                    walletAddressEl.textContent = `Wallet Address: ${address}`;
+                    connectBtn.style.display = 'none';
+                    disconnectBtn.style.display = 'inline-block';
+                }
+            } catch (error) {
+                console.error('Error connecting wallet:', error);
+                walletAddressEl.textContent = 'Failed to connect wallet.';
+            }
+        }
+
+        // Handle wallet disconnection
+        async function disconnectWallet() {
+            await wallet.clearActiveAccount();
+            walletAddressEl.textContent = '';
+            connectBtn.style.display = 'inline-block';
+            disconnectBtn.style.display = 'none';
+        }
+
+        // Request Loan Functionality
+        async function requestLoan() {
+            const nftTokenId = document.getElementById('nftTokenId').value;
+            const loanAmount = document.getElementById('loanAmount').value;
+
+            if (!nftTokenId || !loanAmount) {
+                alert("Please provide valid NFT Token ID and Loan Amount.");
+                return;
+            }
+
+            try {
+                const contract = await Tezos.wallet.at(contractAddress);
+                const operation = await contract.methods.request_loan(nftTokenId, loanAmount).send();
+                await operation.confirmation();
+                alert("Loan requested successfully!");
+            } catch (error) {
+                console.error('Error requesting loan:', error);
+                alert("Failed to request loan.");
+            }
+        }
+
+        // Repay Loan Functionality
+        async function repayLoan() {
+            const repaymentAmount = document.getElementById('repaymentAmount').value;
+
+            if (!repaymentAmount) {
+                alert("Please provide repayment amount.");
+                return;
+            }
+
+            try {
+                const contract = await Tezos.wallet.at(contractAddress);
+                const operation = await contract.methods.repay_loan().send({ amount: repaymentAmount });
+                await operation.confirmation();
+                alert("Loan repaid successfully!");
+            } catch (error) {
+                console.error('Error repaying loan:', error);
+                alert("Failed to repay loan.");
+            }
+        }
+
+        // Seize Collateral Functionality (Admin)
+        async function seizeCollateral() {
+            const borrowerAddress = document.getElementById('borrowerAddress').value;
+
+            if (!borrowerAddress) {
+                alert("Please provide the borrower address.");
+                return;
+            }
+
+            try {
+                const contract = await Tezos.wallet.at(contractAddress);
+                const operation = await contract.methods.seize_collateral(borrowerAddress).send();
+                await operation.confirmation();
+                alert("Collateral seized successfully!");
+            } catch (error) {
+                console.error('Error seizing collateral:', error);
+                alert("Failed to seize collateral.");
+            }
+        }
+
+        // Deposit Funds Functionality (Admin)
+        async function depositFunds() {
+            const depositAmount = document.getElementById('depositAmount').value;
+
+            if (!depositAmount) {
+                alert("Please provide the deposit amount.");
+                return;
+            }
+
+            try {
+                const contract = await Tezos.wallet.at(contractAddress);
+                const operation = await contract.methods.deposit_funds().send({ amount: depositAmount });
+                await operation.confirmation();
+                alert("Funds deposited successfully!");
+            } catch (error) {
+                console.error('Error depositing funds:', error);
+                alert("Failed to deposit funds.");
+            }
+        }
+
+        // Withdraw Funds Functionality (Admin)
+        async function withdrawFunds() {
+            const withdrawAmount = document.getElementById('withdrawAmount').value;
+
+            if (!withdrawAmount) {
+                alert("Please provide the withdraw amount.");
+                return;
+            }
+
+            try {
+                const contract = await Tezos.wallet.at(contractAddress);
+                const operation = await contract.methods.withdraw_funds(withdrawAmount).send();
+                await operation.confirmation();
+                alert("Funds withdrawn successfully!");
+            } catch (error) {
+                console.error('Error withdrawing funds:', error);
+                alert("Failed to withdraw funds.");
+            }
+        }
+
+        // Add event listeners
+        connectBtn.addEventListener('click', connectWallet);
+        disconnectBtn.addEventListener('click', disconnectWallet);
+        document.getElementById('requestLoan').addEventListener('click', requestLoan);
+        document.getElementById('repayLoan').addEventListener('click', repayLoan);
+        document.getElementById('seizeCollateral').addEventListener('click', seizeCollateral);
+        document.getElementById('depositFunds').addEventListener('click', depositFunds);
+        document.getElementById('withdrawFunds').addEventListener('click', withdrawFunds);
+    </script>
+</body>
+
+</html>
