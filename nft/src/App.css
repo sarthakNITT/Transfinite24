@@ -1,42 +1,38 @@
-/* .App {
-  text-align: center;
-}
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-} */
-.AppMain{
-  background-color: #1E1E2F;
-  height: 850px;
+.MainBox{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding-right: 50px;
+  padding-left: 30px;
+  padding: 70px;
+  padding-top: 200px; 
+  background-color: #1E1E2F;
+
+}
+.SignupLeftImage{
+  width: 500px; 
+  height: 500px;
+}
+.RightBox{
+  justify-content: center;
   align-items: center;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgba(197, 197, 197, 0.441);
+  padding-top: 40.5px;
+  padding-bottom: 40.5px;
+  padding-right: 50px;
+  padding-left: 50px;
+  border-radius: 20px;
 }
-.AppHeading{
+.LoginText{
   font-size: 40px;
-    color: white;
-    font-weight: 500;
-    text-align: center;
-    margin-bottom: 10px;
+  color: white;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 10px;
 }
-.Connect{
+.AccountBox{
   width: 475px;
   text-align: center;
   background-color: #763aa079;
@@ -47,11 +43,59 @@
   font-size: 14px;
   margin-bottom: 20px;
   border-width: 0;
-  cursor: pointer;  
+  cursor: pointer;
+}
+.AccountBox:hover{
+  font-weight: bold;
+  transition: 400ms;
+  background-color: #8632c2a7;
 }
 .ListNFT{
-  background-color: rgba(0, 0, 0, 0.488);
+  background-color: rgba(255, 255, 255, 0.021);
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
 }
-.ListToken{
-  background-color: transparent;
+.ListNFTtext{
+  color: white;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.PasswordNameInput{
+  background-color: rgba(255, 255, 255, 0.084);
+  border-width: 0;
+  padding: 15px;
+  width: 400px;
+  border-radius: 10px;
+  color: white;
+  margin-bottom: 10px;
+}
+.PasswordNameInput1{
+  background-color: rgba(255, 255, 255, 0.084);
+  border-width: 0;
+  padding: 15px;
+  width: 200px;
+  border-radius: 10px;
+  color: white;
+  margin-bottom: 10px;
+}
+.dropdown{
+  background-color: rgba(255, 255, 255, 0.084);
+  text-decoration: none;
+  border-width: 0;
+  padding: 15px;
+  width: 200px;
+  border-radius: 10px;
+  color: white;
+  height: 42px;
+  margin-left: 20px;
+}
+.dropdownoption{
+  font-size: 12px;
+  border-color: transparent;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { JsonRpcProvider, Contract, parseEther } from "ethers"; // Adjusted imports
-import './App.css'
-import NFTImage from './NFT.svg'
+import './nftContent.css'
+import NFTImage from '../../images/NFTNEW.svg'
 
 const marketplaceABI = [/* Paste your marketplace ABI here */];
 const marketplaceAddress = "0xYourSmartContractAddress"; // Replace with your contract address
@@ -87,7 +87,6 @@ const App = () => {
 
   return (
     <div className="MainBox">
-      <div className="LeftBox"><img src={NFTImage} alt="NFT" className="SignupLeftImage"/></div>
       <div className="RightBox">
       <div className="LoginText">NFT Marketplace</div>
       {walletAddress ? (
@@ -107,6 +106,7 @@ const App = () => {
           className="PasswordNameInput"
         />
         </div>
+        <div className="passdrop">
         <input
           type="text"
           placeholder="Enter price"
@@ -118,6 +118,7 @@ const App = () => {
             <option className="dropdownoption" value={1}>Fixed Price</option>
             <option className="dropdownoption" value={2}>Auction</option>
           </select>
+          </div>
         {listingType === 2 && (
           <>
             <input
@@ -136,7 +137,7 @@ const App = () => {
         )}
         <button className="AccountBox" onClick={listNFT}>List NFT</button>
       </div>
-
+      
       <div className="ListNFT">
         <div className="ListNFTtext">Buy an NFT</div>
         <div>
@@ -159,7 +160,6 @@ const App = () => {
         </div>
         <button className="AccountBox" onClick={buyNFT}>Buy NFT</button>
       </div>
-
       <div className="ListNFT">
         <div className="ListNFTtext">Place a Bid on an NFT</div>
         <div>
@@ -181,8 +181,8 @@ const App = () => {
         />
         </div>
         <button className="AccountBox" onClick={placeBid}>Place Bid</button>
-      </div>
-    </div>
+        </div>
+        </div>
     </div>
   );
 };

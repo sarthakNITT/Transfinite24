@@ -1,11 +1,15 @@
-// src/components/NFT.js
 import React from 'react';
+import './NFT.css'
+import NFTContent from '../../components/NFT/nftContent'
+import Header from '../../components/Header/Header'
+import Footer from '../../components/Footer/Footer'
 
 const NFT = () => {
   return (      
-    <div className="page-content">
-      <h1>NFT marketplace</h1>
-      <p>Buy and Sell NFTs using crypto with ease.</p>
+    <div className="NFTMain">
+      <Header/>
+      <NFTContent/>
+      <Footer/>
     </div>
   );
 };
