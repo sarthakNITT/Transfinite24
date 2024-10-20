@@ -1,12 +1,11 @@
-// src/components/Footer.js
 import React from 'react';
-import './Footer.css'; // Ensure dark-themed footer
+import './Footer.css'; 
 
 const Footer = () => {
   return (
-    <footer>
-      <p>&copy; 2024 Tezos Hackathon. All rights reserved.</p>
-    </footer>
+      <div className='MainFooter'>
+        2024 Tezos Hackathon. All rights reserved.
+      </div>
   );
 };
 

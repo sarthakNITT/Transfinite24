@@ -1,61 +1,102 @@
 .header {
-    text-align: center;
-    color: white;
-    height: min-content;
-    margin-right: 20px;
-  }
-  .Main{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 15px;
-    margin-bottom: 15px;
-  }
-  .header ul {
-    list-style-type: none;
-  }
-  
-  .header li {
-    display: inline;
-    margin: 0 15px;
-  }
-  
-  .header a {
-    color: white;
-    text-decoration: none;
-  }
-  .Navigationbtn{
-    font-size: 13px;
-  }
-  .Navigationbtn:hover{
-    font-weight: bold;
-    transition: 400ms;
-  }
-  .LoginBtn{
-    margin-right: 10px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: white;
-    color: white;
-    font-size: 13px;
-    padding-right: 20px;
-    padding-left: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-radius: 20px;
-    font-weight: bold;
-  }
-  .SignupBtn{
-    font-size: 13px;
-    font-weight: bold;
-  }
-  .SignupBtn:hover{
-    color: rgb(151, 68, 151);
-  }
-  .LoginBtn:hover{
-    background-color: white;
-    color: black;
-    font-weight: bold;
-    transition: 400ms;
-  }
+  text-align: center;
+  color: white;
+  height: min-content;
+  padding-right: 20px;
+  background-color: rgba(0, 0, 0, 0.9); 
+  padding-top: 10px;
+  padding-bottom: 10px;
+  position: fixed;
+  top: 0;
+  width: 100%; 
+  z-index: 1000;
+  transition: background-color 0.3s ease, width 0.3s ease, padding 0.3s ease; 
+}
+
+.header.scrolled {
+  background-color: rgba(0, 0, 0, 0.9); 
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 25px;
+  width: fit-content; 
+  max-width: 90%; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  transition: 400ms;
+}
+
+.Main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 15px;
+  margin-bottom: 15px;
+  transition: 400ms;
+}
+
+.Main.scrolled {
+  justify-content: center;
+  align-items: center;
+}
+
+.header ul {
+  list-style-type: none;
+}
+
+.header li {
+  display: inline;
+  margin: 0 15px;
+}
+
+.header a {
+  color: white;
+  text-decoration: none;
+}
+
+.Navigationbtn {
+  font-size: 14px;
+  position: relative;
+  font-weight: 600;
+}
+
+.Navigationbtn:hover {
+  font-weight: 800;
+  font-size: 17px;
+  transition: 400ms;
+}
+
+.LoginBtn {
+  margin-right: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: white;
+  color: white;
+  font-size: 13px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.SignupBtn {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.SignupBtn:hover {
+  color: #ffffffb0;
+  transition: 400ms;
+}
+
+.LoginBtn:hover {
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  transition: 400ms;
+}

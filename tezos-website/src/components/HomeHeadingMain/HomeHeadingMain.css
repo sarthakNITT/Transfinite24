@@ -1,12 +1,47 @@
-.home {
-    color: white;
-    display: flex;
-    flex-direction: column; /* To prevent overflow on the body */
-  }
-  
-  .hero {
-    text-align: left;
-    padding: 50px;
-    max-height: 100vh; /* Limit the hero section to viewport height */
-    overflow-y: auto; /* Scroll vertically if content exceeds viewport */
-  }
+.homeheading{
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 120px;
+}
+.HomeTextBox{
+  padding-left: 30px;
+}
+.MainImage{
+  width: 700px;
+}
+.Mainheading{
+  font-size: 70px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: white;
+}
+.Mainsubheading{
+  font-size: 15px;
+  padding-right: 120px;
+  padding-top: 10px;
+  padding-bottom: 40px;
+  color: rgba(255, 255, 255, 0.726);
+}
+.Start{
+  margin-top: 30px;
+  text-decoration: none;
+  background-color: transparent;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-right: 60px;
+  padding-left: 60px;
+  color: white;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+  transition: 400ms;
+  border-radius: 10px;
+  font-size: 13px;
+}
+.Start:hover{
+  transition: 400ms;
+  background-color: white;
+  color: black;
+  font-weight: 700;
+  cursor: pointer;
+}

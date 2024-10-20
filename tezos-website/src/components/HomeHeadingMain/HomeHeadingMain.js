@@ -1,17 +1,18 @@
 import React from 'react';
-import './Home.css';
+import './HomeHeadingMain.css';
+import MainImage from '../../images/Asset 2.svg'
 
 function Home() {
   return (
-    <div className="home">
-      <section className="hero">
-        <h1>Welcome to Tezos GandMasti</h1>
-        <p>
-            We enable seamless payments using various cryptocurrencies, offering a secure and decentralized way to transact.<br />
-            Our platform also provides crypto lending services, allowing users to borrow against NFTs as collateral.<br />
-            Additionally, we host a dynamic NFT marketplace where users can buy, sell, and trade unique digital assets.
-        </p>
-      </section>
+    <div className="homeheading">
+      <div className='Main'>
+        <div className='HomeTextBox'>
+          <div className='Mainheading'>Lending made easy through NFT's</div>
+          <div className='Mainsubheading'>Our platform enables secure crypto payments, NFT-backed loans, and a dynamic marketplace for buying, selling, and trading unique digital assets with transparency.</div>
+          <a className='Start' href='/Lending'>Get Started</a>
+        </div>
+        <div className='HomeImageBox'><img src={MainImage} alt='MainLogo' className='MainImage' /></div>
+      </div>
     </div>
   );
 }

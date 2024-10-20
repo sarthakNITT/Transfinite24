@@ -1,0 +1,46 @@
+.CompaniesMain{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around; 
+    padding: 20px; 
+    gap: 20px; 
+    overflow-x: hidden; 
+}
+  
+  .CompaniesMain img {
+    margin-right: 20px; 
+
+  }
+  .smartpy{
+    max-width: 70px;
+  }
+  .react{
+    max-width: 90px;
+  }
+  .GitHub{
+    max-width: 80px;
+  }
+
+  .nodejs{
+    max-width: 100px;
+  }
+  .tezos{
+    max-width: 60px;
+  }
+  .Mongodb{
+    max-width: 120px;
+  }
+  
+  .CompaniesMain img:last-child {
+    margin-right: 0; 
+  }
+  .EtherLink{
+    max-width: 80px;
+  }
+  .companyheading{
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.349);
+    text-align: center;
+    padding-top: 40px;
+  }
