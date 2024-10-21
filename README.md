@@ -20,3 +20,9 @@ Welcome to **ANSFI**, an innovative blockchain platform that revolutionizes the 
 - **Backend**: Node.js (for API handling)  
 - **Smart Contracts**: Written in SmartPy, the native language of Tezos  
 - **Storage**: MongoDB
+
+---
+## [Contract Deployed](https://github.com/sarthakNITT/Transfinite24/tree/main/contract)
+
+<img width="1413" alt="Screenshot 2024-10-21 at 3 53 39 PM" src="https://github.com/user-attachments/assets/a01d7c0e-fd58-428a-a790-0a2bacf4a354">
+<img width="1413" alt="Screenshot 2024-10-21 at 3 54 27 PM" src="https://github.com/user-attachments/assets/14ea065a-d01a-43b8-865b-973a94b69b6a">
