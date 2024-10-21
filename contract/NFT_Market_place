@@ -1,0 +1,157 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
+contract NFTMarketplace is Ownable, ReentrancyGuard {
+    using Counters for Counters.Counter;
+    Counters.Counter private _listingIdCounter;
+
+    enum ListingType { FixedPrice, Auction }
+
+    struct Listing {
+        uint256 listingId;
+        uint256 tokenId;
+        address nftContract;
+        address seller;
+        address highestBidder;
+        uint256 price;
+        uint256 highestBid;
+        ListingType listingType;
+        uint256 startTime;
+        uint256 endTime;
+        bool isSold;
+    }
+
+    // Royalties and listings
+    uint256 public royaltyFee = 5; // 5%
+    mapping(uint256 => Listing) public listings;
+    mapping(uint256 => address) public tokenCreators; // Store the original creator of the NFT
+
+    // Events
+    event NFTListed(
+        uint256 indexed listingId,
+        uint256 indexed tokenId,
+        address indexed nftContract,
+        address seller,
+        uint256 price,
+        ListingType listingType,
+        uint256 startTime,
+        uint256 endTime
+    );
+    event NFTBought(uint256 indexed listingId, address indexed buyer, uint256 price);
+    event BidPlaced(uint256 indexed listingId, address indexed bidder, uint256 bid);
+
+    // Pass msg.sender to the Ownable constructor to make the deployer the owner
+    constructor() Ownable(msg.sender) {}
+
+    // Create an NFT listing (either auction or fixed price)
+    function listNFT(
+        address nftContract,
+        uint256 tokenId,
+        uint256 price,
+        ListingType listingType,
+        uint256 startTime,
+        uint256 endTime
+    ) external nonReentrant {
+        require(price > 0, "Price must be greater than zero");
+        require(listingType == ListingType.FixedPrice || endTime > block.timestamp, "Auction end time must be in the future");
+
+        IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
+
+        _listingIdCounter.increment();
+        uint256 listingId = _listingIdCounter.current();
+
+        listings[listingId] = Listing({
+            listingId: listingId,
+            tokenId: tokenId,
+            nftContract: nftContract,
+            seller: msg.sender,
+            highestBidder: address(0),
+            price: price,
+            highestBid: 0,
+            listingType: listingType,
+            startTime: startTime,
+            endTime: endTime,
+            isSold: false
+        });
+
+        tokenCreators[tokenId] = msg.sender;
+
+        emit NFTListed(listingId, tokenId, nftContract, msg.sender, price, listingType, startTime, endTime);
+    }
+
+    // Buy NFT for fixed price
+    function buyNFT(uint256 listingId) external payable nonReentrant {
+        Listing storage listing = listings[listingId];
+        require(listing.listingType == ListingType.FixedPrice, "Not a fixed price listing");
+        require(msg.value >= listing.price, "Insufficient funds to buy");
+        require(!listing.isSold, "NFT already sold");
+        require(block.timestamp >= listing.startTime, "Sale hasn't started yet");
+
+        uint256 salePrice = listing.price;
+        uint256 royaltyAmount = (salePrice * royaltyFee) / 100;
+
+        // Pay the creator royalties
+        payable(tokenCreators[listing.tokenId]).transfer(royaltyAmount);
+
+        // Pay the seller
+        payable(listing.seller).transfer(salePrice - royaltyAmount);
+
+        IERC721(listing.nftContract).transferFrom(address(this), msg.sender, listing.tokenId);
+
+        listing.isSold = true;
+        emit NFTBought(listingId, msg.sender, salePrice);
+    }
+
+    // Place a bid on auction
+    function placeBid(uint256 listingId) external payable nonReentrant {
+        Listing storage listing = listings[listingId];
+        require(listing.listingType == ListingType.Auction, "Not an auction listing");
+        require(block.timestamp >= listing.startTime, "Auction hasn't started yet");
+        require(block.timestamp < listing.endTime, "Auction has ended");
+        require(msg.value > listing.highestBid, "Bid must be higher than the current bid");
+
+        // Refund the previous highest bidder if there was one
+        if (listing.highestBidder != address(0)) {
+            payable(listing.highestBidder).transfer(listing.highestBid);
+        }
+
+        listing.highestBid = msg.value;
+        listing.highestBidder = msg.sender;
+
+        emit BidPlaced(listingId, msg.sender, msg.value);
+    }
+
+    // End auction and finalize sale
+    function finalizeAuction(uint256 listingId) external nonReentrant {
+        Listing storage listing = listings[listingId];
+        require(listing.listingType == ListingType.Auction, "Not an auction listing");
+        require(block.timestamp >= listing.endTime, "Auction hasn't ended yet");
+        require(!listing.isSold, "NFT already sold");
+
+        uint256 salePrice = listing.highestBid;
+        uint256 royaltyAmount = (salePrice * royaltyFee) / 100;
+
+        // Pay the creator royalties
+        payable(tokenCreators[listing.tokenId]).transfer(royaltyAmount);
+
+        // Pay the seller
+        payable(listing.seller).transfer(salePrice - royaltyAmount);
+
+        IERC721(listing.nftContract).transferFrom(address(this), listing.highestBidder, listing.tokenId);
+
+        listing.isSold = true;
+        emit NFTBought(listingId, listing.highestBidder, salePrice);
+    }
+
+    // Update royalty fee (only the owner of the contract can do this)
+    function updateRoyaltyFee(uint256 newRoyaltyFee) external onlyOwner {
+        require(newRoyaltyFee <= 10, "Royalty fee cannot exceed 10%");
+        royaltyFee = newRoyaltyFee;
+    }
+}
